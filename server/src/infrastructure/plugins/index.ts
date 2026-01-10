@@ -6,6 +6,7 @@ import { db } from '../db';
 import { IVariantRepository } from 'src/domain/repository/variant.repository';
 import { VariantDAO } from '../dao/variant.dao';
 import { VariantService } from 'src/domain/service/variant.service';
+import { ReportService } from 'src/domain/service/report.service';
 
 export default fp(async (fastify) => {
   const variantRepository: IVariantRepository = new VariantDAO(db);
@@ -14,8 +15,10 @@ export default fp(async (fastify) => {
   const sampleRepository: ISampleRepository = new SampleDAO(db);
   const sampleService = new SampleService(sampleRepository, variantService);
 
+  const reportService = new ReportService(sampleService);
 
   
   fastify.decorate('sampleService', sampleService);
   fastify.decorate('variantService', variantService);
+  fastify.decorate('reportService', reportService);
 });
