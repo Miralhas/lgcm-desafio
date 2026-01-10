@@ -14,4 +14,4 @@ export const SampleSchema = Type.Intersect([
 export type CreateSampleInput = Static<typeof CreateSampleSchema>;
 export type Sample = Static<typeof SampleSchema>;
 
-export type SampleDTO = Omit<Sample, "id">;
+export type SampleDTO = Sample;

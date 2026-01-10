@@ -1,4 +1,4 @@
-import { SampleService } from "src/domain/service/variants.service"
+import { SampleService } from "src/domain/service/sample.service"
 
 declare module 'fastify' {
   interface FastifyInstance {
