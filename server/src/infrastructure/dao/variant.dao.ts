@@ -11,7 +11,7 @@ export class VariantDAO implements IVariantRepository {
   async create(input: CreateVariantInput, sampleId: Sample["id"]): Promise<Variant | undefined> {
     const res = await this.db.insert(variants)
       .values({ ...input, sampleId })
-      .returning();
+      .returning()
     return res[0];
   }
 

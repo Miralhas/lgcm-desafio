@@ -1,0 +1,1 @@
+ALTER TABLE "variants" ADD CONSTRAINT "variants_sample_id_samples_id_fkey" FOREIGN KEY ("sample_id") REFERENCES "samples"("id");

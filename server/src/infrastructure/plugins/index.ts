@@ -8,11 +8,12 @@ import { VariantDAO } from '../dao/variant.dao';
 import { VariantService } from 'src/domain/service/variant.service';
 
 export default fp(async (fastify) => {
-  const sampleRepository: ISampleRepository = new SampleDAO(db);
-  const sampleService = new SampleService(sampleRepository);
-
   const variantRepository: IVariantRepository = new VariantDAO(db);
   const variantService = new VariantService(variantRepository);
+
+  const sampleRepository: ISampleRepository = new SampleDAO(db);
+  const sampleService = new SampleService(sampleRepository, variantService);
+
 
   
   fastify.decorate('sampleService', sampleService);

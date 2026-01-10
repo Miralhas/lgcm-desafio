@@ -2,10 +2,14 @@ import { SampleMapper } from "src/api/mappers/sample.mapper";
 import { CreateSampleInput, Sample, SampleDTO } from "src/api/schemas/sample.schema";
 import { NotFoundException } from "../exceptions/not-found";
 import { ISampleRepository } from "../repository/sample.repository";
+import { VariantService } from "./variant.service";
 
 export class SampleService {
-  constructor(protected readonly sampleRepository: ISampleRepository) { }
-  
+  constructor(
+    protected readonly sampleRepository: ISampleRepository,
+    protected readonly variantService: VariantService
+  ) { }
+
   async findAll(): Promise<Sample[]> {
     return await this.sampleRepository.findAll();
   }
@@ -16,7 +20,8 @@ export class SampleService {
     return SampleMapper.toResponse(sample);
   }
 
-  async create(sample: CreateSampleInput): Promise<Sample | undefined> {
+  async create(input: CreateSampleInput): Promise<Sample | undefined> {
+    const sample = SampleMapper.toDomain(input);
     return await this.sampleRepository.create(sample);
   }
 

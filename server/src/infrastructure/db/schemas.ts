@@ -19,7 +19,7 @@ export const variants = pgTable("variants", {
   id: varchar('id').primaryKey(),
   gene: varchar("gene").notNull(),
   classification: classificationPgEnum().notNull(),
-  sampleId: uuid('sample_id').notNull(),
+  sampleId: uuid('sample_id').notNull().references(() => samples.id),
 });
 
 export const relations = defineRelations({ variants, samples }, (r) => ({

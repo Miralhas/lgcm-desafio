@@ -1,9 +1,11 @@
 import Type, { Static } from "typebox";
+import { CreateVariantSchema, VariantSchema } from "./variant.schema";
 
 export const SampleId = Type.Object({ id: Type.String({ format: "uuid" }) });
 
 export const CreateSampleSchema = Type.Object({
   name: Type.String(),
+  variants: Type.Array(CreateVariantSchema, { minItems: 1 })
 });
 
 export const SampleSchema = Type.Intersect([

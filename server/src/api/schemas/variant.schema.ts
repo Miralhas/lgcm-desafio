@@ -1,6 +1,5 @@
 import { classificationEnum } from "src/infrastructure/db/schemas";
 import Type, { Static } from "typebox";
-import { SampleId } from "./sample.schema";
 
 export const VariantId = Type.Object({ id: Type.String() });
 
@@ -14,7 +13,7 @@ export const CreateVariantSchema = Type.Intersect([
 
 export const VariantSchema = Type.Intersect([
   CreateVariantSchema,
-  Type.Object({ sampleId: SampleId.properties.id })
+  Type.Object({ sampleId: Type.String({format: "uuid"}) })
 ]);
 
 export type CreateVariantInput = Static<typeof CreateVariantSchema>;
