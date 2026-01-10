@@ -16,8 +16,8 @@ export class SampleService {
     return SampleMapper.toResponse(sample);
   }
 
-  async create(post: CreateSampleInput): Promise<Sample | undefined> {
-    return await this.sampleRepository.create(post);
+  async create(sample: CreateSampleInput): Promise<Sample | undefined> {
+    return await this.sampleRepository.create(sample);
   }
 
   private handleNotFound(sample: Sample | undefined, id: Sample['id']): asserts sample is Sample {

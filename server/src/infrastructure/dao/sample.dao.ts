@@ -8,10 +8,10 @@ export class SampleDAO implements ISampleRepository {
   constructor(private readonly db: DB) {}
 
   async create(input: CreateSampleInput): Promise<Sample | undefined> {
-    const x = await this.db.insert(samples)
+    const res = await this.db.insert(samples)
       .values(input)
       .returning();
-    return x[0]
+    return res[0];
   }
 
   async findAll(): Promise<Sample[]> {

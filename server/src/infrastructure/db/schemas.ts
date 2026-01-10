@@ -6,7 +6,9 @@ import {
 } from 'drizzle-orm/pg-core';
 import { defineRelations } from 'drizzle-orm';
 
-export const classificationEnum = pgEnum('classification', ['pathogenic', 'benign', 'vus']);
+export const classificationEnum = ['pathogenic', 'benign', 'vus'] as const
+
+export const classificationPgEnum = pgEnum('classification', classificationEnum);
 
 export const samples = pgTable("samples", {
   id: uuid('id').primaryKey().defaultRandom(),
@@ -16,7 +18,7 @@ export const samples = pgTable("samples", {
 export const variants = pgTable("variants", {
   id: varchar('id').primaryKey(),
   gene: varchar("gene").notNull(),
-  classification: classificationEnum().notNull(),
+  classification: classificationPgEnum().notNull(),
   sampleId: uuid('sample_id').notNull(),
 });
 

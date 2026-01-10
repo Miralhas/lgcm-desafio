@@ -7,6 +7,6 @@ CREATE TABLE "samples" (
 CREATE TABLE "variants" (
 	"id" varchar PRIMARY KEY,
 	"gene" varchar NOT NULL,
-	"classification" "classification" NOT NULL,
+	"classification" "classification",
 	"sample_id" uuid NOT NULL
 );

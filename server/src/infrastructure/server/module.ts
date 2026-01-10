@@ -1,4 +1,5 @@
 import { SampleService } from "src/domain/service/sample.service"
+import { VariantService } from "src/domain/service/variant.service"
 
 declare module 'fastify' {
   interface FastifyInstance {
@@ -8,6 +9,7 @@ declare module 'fastify' {
       PINO_LOG_LEVEL: string
       NODE_ENV: string
     },
-    sampleService: SampleService
+    sampleService: SampleService,
+    variantService: VariantService,
   }
 }
