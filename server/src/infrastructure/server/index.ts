@@ -4,6 +4,7 @@ import * as dotenv from "dotenv";
 import Fastify from 'fastify';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { errorHandler } from "src/api/error-handler";
 import { createLogger, Level } from 'src/utils/logger';
 import { options } from './schema';
 
@@ -18,33 +19,29 @@ const logger = createLogger({ level, isDev });
 
 export { logger };
 
-declare module 'fastify' {
-  interface FastifyInstance {
-    config: {
-      PORT: string
-      DATABASE_URL: string
-      PINO_LOG_LEVEL: string
-      NODE_ENV: string
-    }
-  }
-}
-
 export const createServer = async () => {
-  const fastify = Fastify({
+  const app = Fastify({
     loggerInstance: logger,
   });
 
-  await fastify.register(env, options).after();
+  await app.register(env, options).after();
 
-  await fastify.register(autoLoad, {
+  await app.register(autoLoad, {
     dir: join(__dirname, "../../api/routes"),
     options: { prefix: "/api" },
     forceESM: true,
   });
 
-  fastify.ready(() => {
-    fastify.log.info(fastify.printRoutes());
+  app.register(autoLoad, {
+    dir: join(__dirname, '../plugins'),
+    forceESM: true,
+  });
+
+  app.setErrorHandler(errorHandler);
+
+  app.ready(() => {
+    app.log.info(app.printRoutes());
   })
 
-  return fastify;
+  return app;
 }
