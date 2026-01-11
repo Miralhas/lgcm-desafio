@@ -1,0 +1,2 @@
+ALTER TABLE "reports" ALTER COLUMN "id" SET NOT NULL;
+ALTER TABLE "reports" ALTER COLUMN "generatedAt" SET NOT NULL;

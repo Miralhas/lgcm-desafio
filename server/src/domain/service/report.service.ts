@@ -1,23 +1,68 @@
-import { Report } from "src/api/schemas/report.schema";
+import { ReportDTO, ReportInput, ReportStatisticsType } from "src/api/schemas/report.schema";
 import { Sample } from "src/api/schemas/sample.schema";
-import { SampleService } from "./sample.service";
 import { Variant } from "src/api/schemas/variant.schema";
+import { SampleService } from "./sample.service";
+import { IReportRepository } from "../repository/reports.repository";
+import { isUniqueConstraintError } from "src/utils/map-error";
+import { ReportAlreadyExists } from "../exceptions/report-already-exists";
 
 export class ReportService {
-  constructor(private readonly sampleService: SampleService) { }
+  constructor(
+    private readonly sampleService: SampleService,
+    private readonly reportRepository: IReportRepository
+  ) { }
 
-  async generatePreview(sampleId: Sample["id"], notes?: string): Promise<Report> {
+  async findByIdOrException(id: Sample["id"]) {
+    const report = await this.reportRepository.findById(id);
+    const sample = await this.sampleService.findByIdOrException(id);
+    return { ...report, highlightedVariants: sample.variants, }
+  }
+
+  async generatePreview(sampleId: Sample["id"], notes?: string): Promise<ReportDTO> {
     const sample = await this.sampleService.findByIdOrException(sampleId);
-    const summary = this.#generateSummary(sample.variants);
 
     return {
-      generatedAt: new Date().toISOString(),
-      highlightedVariants: sample.variants,
-      notes: notes ?? "Generated Notes",
       sampleId,
-      statistics: { benign: 1, pathogenic: 1, vus: 1 },
-      summary: summary
+      summary: this.#generateSummary(sample.variants),
+      statistics: this.#getVariantsStats(sample.variants),
+      highlightedVariants: sample.variants,
+      notes: notes ?? this.#generateNotes(sample.variants, sampleId),
+      generatedAt: new Date().toISOString(),
     }
+  }
+
+  async create(input: ReportInput) {
+    let notes = input.notes;
+    const sample = await this.sampleService.findByIdOrException(input.sampleId);
+    const statistics = this.#getVariantsStats(sample.variants);
+    const summary = this.#generateSummary(sample.variants);
+
+    if (!notes) {
+      notes = this.#generateNotes(sample.variants, input.sampleId);
+    }
+
+    try {
+      const report = await this.reportRepository.create({ statistics, notes, sampleId: input.sampleId, summary, })
+      return { ...report, highlightedVariants: sample.variants, }
+    } catch (err) {
+      if (isUniqueConstraintError(err)) {
+        throw new ReportAlreadyExists(input.sampleId);
+      }
+      throw err;
+    }
+  }
+
+  #getVariantsStats(variants: Omit<Variant, "sampleId">[]): ReportStatisticsType {
+    const pathogenic = variants.filter(v => v.classification === "pathogenic").length;
+    const benign = variants.filter(v => v.classification === "benign").length;
+    const vus = variants.filter(v => v.classification === "vus").length;
+
+    return { pathogenic, benign, vus };
+  }
+
+  #generateNotes(variants: Omit<Variant, "sampleId">[], sampleId: Sample["id"]) {
+    const { benign, pathogenic, vus } = this.#getVariantsStats(variants);
+    return `Report for sample of id '${sampleId}' has a total of ${variants.length} with ${pathogenic} pathogenic, ${vus} vus, and ${benign} benign`
   }
 
   #generateSummary(variants: Omit<Variant, "sampleId">[]): string {
@@ -25,11 +70,9 @@ export class ReportService {
       return "No variants were found."
     }
 
-    const pathogenicSize = variants.filter(v => v.classification === "pathogenic").length;
-    const benignSize = variants.filter(v => v.classification === "pathogenic").length;
-    const vusSize = variants.filter(v => v.classification === "pathogenic").length;
+    const { benign, pathogenic, vus } = this.#getVariantsStats(variants);
 
-    const message = `${variants.length} variants were found: ${pathogenicSize} pathogenic, ${benignSize} benign, and ${vusSize} VUS.`
+    const message = `${variants.length} variants were found: ${pathogenic} pathogenic, ${benign} benign, and ${vus} VUS.`
     return message;
   }
 }

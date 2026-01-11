@@ -1,4 +1,4 @@
-import { CreateSampleInput, Sample } from "src/api/schemas/sample.schema";
+import { Sample } from "src/api/schemas/sample.schema";
 
 export interface ISampleRepository {
   create(sample: Sample): Promise<Sample | undefined>;

@@ -7,6 +7,8 @@ CREATE TABLE "samples" (
 CREATE TABLE "variants" (
 	"id" varchar PRIMARY KEY,
 	"gene" varchar NOT NULL,
-	"classification" "classification",
+	"classification" "classification" NOT NULL,
 	"sample_id" uuid NOT NULL
 );
+
+ALTER TABLE "variants" ADD CONSTRAINT "variants_sample_id_samples_id_fkey" FOREIGN KEY ("sample_id") REFERENCES "samples"("id");

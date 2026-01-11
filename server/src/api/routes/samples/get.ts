@@ -6,11 +6,13 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
     schema: { params: SampleId }
   }, async (req, reply) => {
     const id = req.params.id;
-    return app.sampleService.findByIdOrException(id);
+    const res = await app.sampleService.findByIdOrException(id);
+    reply.send(res);
   });
 
   app.get("/", async (req, reply) => {
-    return app.sampleService.findAll();
+    const res = await app.sampleService.findAll();
+    reply.send(res);
   });
 
 }

@@ -4,8 +4,8 @@ export class VariantAlreadyExists extends BaseException {
   statusCode = 409;
 
   constructor(id: string) {
-    const message = `Variant with id ${id} already exists!`
+    const message = `Variant of id '${id}' already exists.`
     super(message);
-    this.name = 'NotFoundException';
+    this.name = 'VariantAlreadyExists';
   }
 }

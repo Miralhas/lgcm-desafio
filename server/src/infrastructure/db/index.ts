@@ -1,8 +1,7 @@
-import * as schemas from "./schemas"
+import * as dotenv from "dotenv";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
-import * as dotenv from "dotenv";
-import { defineRelations } from "drizzle-orm";
+import * as schemas from "./schemas";
 
 dotenv.config();
 

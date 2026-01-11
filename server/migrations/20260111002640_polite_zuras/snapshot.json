@@ -1,9 +1,9 @@
 {
   "version": "8",
   "dialect": "postgres",
-  "id": "bc697813-7d38-4811-9aef-c6047c09864d",
+  "id": "0a07d33d-4b16-467a-a250-62d0e643c318",
   "prevIds": [
-    "88041b66-9c3e-438f-b963-784988cf12f3"
+    "9700f9b3-0b16-440d-afe0-8b24f6f0005e"
   ],
   "ddl": [
     {
@@ -18,6 +18,12 @@
     },
     {
       "isRlsEnabled": false,
+      "name": "reports",
+      "entityType": "tables",
+      "schema": "public"
+    },
+    {
+      "isRlsEnabled": false,
       "name": "samples",
       "entityType": "tables",
       "schema": "public"
@@ -27,6 +33,71 @@
       "name": "variants",
       "entityType": "tables",
       "schema": "public"
+    },
+    {
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "id",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "reports"
+    },
+    {
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "summary",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "reports"
+    },
+    {
+      "type": "jsonb",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "statistics",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "reports"
+    },
+    {
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "notes",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "reports"
+    },
+    {
+      "type": "timestamp",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "name": "generatedAt",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "reports"
     },
     {
       "type": "uuid",
@@ -105,6 +176,50 @@
       "entityType": "columns",
       "schema": "public",
       "table": "variants"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "id"
+      ],
+      "schemaTo": "public",
+      "tableTo": "samples",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "CASCADE",
+      "name": "reports_id_samples_id_fkey",
+      "entityType": "fks",
+      "schema": "public",
+      "table": "reports"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "sample_id"
+      ],
+      "schemaTo": "public",
+      "tableTo": "samples",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "CASCADE",
+      "name": "variants_sample_id_samples_id_fkey",
+      "entityType": "fks",
+      "schema": "public",
+      "table": "variants"
+    },
+    {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "name": "reports_pkey",
+      "schema": "public",
+      "table": "reports",
+      "entityType": "pks"
     },
     {
       "columns": [

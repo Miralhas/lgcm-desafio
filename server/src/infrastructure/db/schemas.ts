@@ -2,7 +2,10 @@ import {
   pgEnum,
   pgTable,
   uuid,
-  varchar
+  varchar,
+  text,
+  jsonb,
+  timestamp
 } from 'drizzle-orm/pg-core';
 import { defineRelations } from 'drizzle-orm';
 
@@ -19,10 +22,19 @@ export const variants = pgTable("variants", {
   id: varchar('id').primaryKey(),
   gene: varchar("gene").notNull(),
   classification: classificationPgEnum().notNull(),
-  sampleId: uuid('sample_id').notNull().references(() => samples.id),
+  sampleId: uuid('sample_id').notNull().references(() => samples.id, { onDelete: "cascade" }),
 });
 
-export const relations = defineRelations({ variants, samples }, (r) => ({
+export const reports = pgTable("reports", {
+  sampleId: uuid('id').primaryKey().references(() => samples.id, { onDelete: "cascade" }),
+  summary: text("summary").notNull(),
+  statistics: jsonb("statistics").$type<{ pathogenic: number; benign: number; vus: number }>().notNull(),
+  notes: text("notes").notNull(),
+  generatedAt: timestamp("generatedAt").defaultNow().notNull(),
+});
+
+
+export const relations = defineRelations({ variants, samples, reports }, (r) => ({
   variants: {
     sample: r.one.samples({
       from: r.variants.sampleId,
@@ -30,6 +42,13 @@ export const relations = defineRelations({ variants, samples }, (r) => ({
     }),
   },
   samples: {
-    variants: r.many.variants()
-  }
+    variants: r.many.variants(),
+  },
+
+  reports: {
+    sample: r.one.samples({
+      from: r.reports.sampleId,
+      to: r.samples.id,
+    }),
+  },
 }));

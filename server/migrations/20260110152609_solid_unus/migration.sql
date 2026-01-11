@@ -1,1 +1,0 @@
-ALTER TABLE "variants" ALTER COLUMN "classification" SET NOT NULL;

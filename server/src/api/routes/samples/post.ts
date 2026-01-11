@@ -7,7 +7,7 @@ const route: FastifyPluginAsyncTypebox = async (app) => {
   }, async (req, reply) => {
     const service = app.sampleService;
     const sample = await service.create(req.body);
-    return reply.status(201).send(sample);
+    reply.status(201).send(sample);
   })
 }
 

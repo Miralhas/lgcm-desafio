@@ -1,0 +1,1 @@
+ALTER TABLE "reports" RENAME COLUMN "created_at" TO "generatedAt";
