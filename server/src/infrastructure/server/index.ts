@@ -7,6 +7,7 @@ import { errorHandler } from "src/api/error-handler";
 import { createLogger, Level } from 'src/utils/logger';
 import { options } from './schema';
 import { fileURLToPath } from "node:url";
+import cors from "@fastify/cors";
 
 dotenv.config();
 
@@ -23,6 +24,10 @@ export const createServer = async () => {
   const app = Fastify({
     loggerInstance: logger,
   });
+
+  await app.register(cors, {
+    origin: true
+  })
 
   await app.register(env, options).after();
 
