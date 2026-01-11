@@ -3,11 +3,13 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import HomePage from './pages/home'
 import Providers from './components/providers'
+import { Toaster } from 'sonner'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Providers>
       <HomePage />
     </Providers>
+    <Toaster richColors />
   </StrictMode>,
 )

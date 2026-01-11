@@ -12,7 +12,7 @@ const SampleDetail = () => {
       <Container className="flex items-center justify-center">
         <div className="flex items-center justify-center p-12 rounded-md bg-card/60 text-muted-foreground flex-col gap-2 border">
           <FlaskConicalOff className="size-8" />
-          <p className="">No sample selected...</p>
+          <p>No sample selected...</p>
         </div>
       </Container>
     )
@@ -28,7 +28,7 @@ const SampleDetail = () => {
 const Container = ({ children, className }: PropsWithChildren<{ className?: string }>) => {
   return (
     <div className="flex-1 space-y-1">
-      <h2 className="text-foreground/70">Sample Detail</h2>
+      <h2 className="text-foreground/70 text-right">Sample Detail</h2>
       <div className={cn("bg-secondary border rounded-lg md:min-h-100", className)}>
         {children}
       </div>

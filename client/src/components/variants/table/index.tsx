@@ -1,6 +1,7 @@
 import {
   Table,
   TableBody,
+  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -10,11 +11,16 @@ import type { Variant } from "@/types/variant";
 
 type Props = {
   variants: Variant[];
+  withCaption?: boolean;
+
 }
 
-const VariantsTable = ({ variants }: Props) => {
+const VariantsTable = ({ variants, withCaption = false, }: Props) => {
   return (
     <Table className="mt-2 border">
+      {withCaption && (
+        <TableCaption>A List of all sample variants</TableCaption>
+      )}
       <TableHeader>
         <TableRow>
           <TableHead>Id</TableHead>

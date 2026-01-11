@@ -127,3 +127,9 @@
     @apply bg-background text-foreground;
   }
 }
+
+* {
+  scrollbar-color: rgba(68, 15, 23, 0.8) #000000;
+  scrollbar-width: thin;
+  scroll-behavior: smooth;
+}
