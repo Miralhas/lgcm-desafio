@@ -3,10 +3,10 @@ import env from '@fastify/env';
 import * as dotenv from "dotenv";
 import Fastify from 'fastify';
 import { dirname, join } from 'node:path';
-import { fileURLToPath } from 'node:url';
 import { errorHandler } from "src/api/error-handler";
 import { createLogger, Level } from 'src/utils/logger';
 import { options } from './schema';
+import { fileURLToPath } from "node:url";
 
 dotenv.config();
 
@@ -29,12 +29,12 @@ export const createServer = async () => {
   await app.register(autoLoad, {
     dir: join(__dirname, "../../api/routes"),
     options: { prefix: "/api" },
-    forceESM: true,
+    // forceESM: true,
   });
 
   app.register(autoLoad, {
     dir: join(__dirname, '../plugins'),
-    forceESM: true,
+    // forceESM: true,
   });
 
   app.setErrorHandler(errorHandler);
