@@ -1,22 +1,24 @@
 import type { Sample } from "@/types/sample";
-import { TableCell, TableRow } from "../ui/table";
+import { TableCell, TableRow } from "@/components/ui/table";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { useSampleContext } from "@/contexts/sample-context";
 
 type Props = {
   sample: Sample;
-  selected: boolean;
-  handleSelected: (id: Sample["id"]) => void;
 }
 
-const SampleRow = ({ sample, selected, handleSelected }: Props) => {
+const SampleRow = ({ sample }: Props) => {
   const { id, name, variants } = sample;
+  const { onSelectSample, sample: selected } = useSampleContext();
+
+  const isSelected = sample.id === selected?.id;
 
   return (
-    <TableRow data-state={selected && "selected"} onClick={() => handleSelected(id)} className="cursor-pointer">
+    <TableRow data-state={isSelected && "selected"} onClick={() => onSelectSample(sample)} className="cursor-pointer hover:bg-primary/10 hover:border hover:border-primary/20">
       <Tooltip delayDuration={400}>
         <TooltipTrigger asChild>
           <TableCell className="font-medium max-w-25 truncate">{id}</TableCell>
