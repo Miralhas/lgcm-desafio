@@ -1,6 +1,6 @@
 import type { Variant } from "./variant";
 
-export interface Sample {
+export type Sample = {
   id: string;
   name: string;
   variants: Variant[];
