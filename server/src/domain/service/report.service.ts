@@ -1,10 +1,11 @@
-import { ReportDTO, ReportInput, ReportStatisticsType } from "src/api/schemas/report.schema";
+import { Report, ReportDTO, ReportInput, ReportStatisticsType } from "src/api/schemas/report.schema";
 import { Sample } from "src/api/schemas/sample.schema";
 import { Variant } from "src/api/schemas/variant.schema";
-import { SampleService } from "./sample.service";
-import { IReportRepository } from "../repository/reports.repository";
 import { isUniqueConstraintError } from "src/utils/map-error";
+import { NotFoundException } from "../exceptions/not-found";
 import { ReportAlreadyExists } from "../exceptions/report-already-exists";
+import { IReportRepository } from "../repository/reports.repository";
+import { SampleService } from "./sample.service";
 
 export class ReportService {
   constructor(
@@ -12,8 +13,9 @@ export class ReportService {
     private readonly reportRepository: IReportRepository
   ) { }
 
-  async findByIdOrException(id: Sample["id"]) {
+  async findByIdOrException(id: Report["sampleId"]) {
     const report = await this.reportRepository.findById(id);
+    this.handleNotFound(report, id);
     const sample = await this.sampleService.findByIdOrException(id);
     return { ...report, highlightedVariants: sample.variants, }
   }
@@ -23,10 +25,10 @@ export class ReportService {
 
     return {
       sampleId,
-      summary: this.#generateSummary(sample.variants),
-      statistics: this.#getVariantsStats(sample.variants),
+      summary: this.generateSummary(sample.variants),
+      statistics: this.getVariantsStats(sample.variants),
       highlightedVariants: sample.variants,
-      notes: notes ?? this.#generateNotes(sample.variants, sampleId),
+      notes: notes ?? this.generateNotes(sample.variants, sampleId),
       generatedAt: new Date().toISOString(),
     }
   }
@@ -34,11 +36,11 @@ export class ReportService {
   async create(input: ReportInput) {
     let notes = input.notes;
     const sample = await this.sampleService.findByIdOrException(input.sampleId);
-    const statistics = this.#getVariantsStats(sample.variants);
-    const summary = this.#generateSummary(sample.variants);
+    const statistics = this.getVariantsStats(sample.variants);
+    const summary = this.generateSummary(sample.variants);
 
     if (!notes) {
-      notes = this.#generateNotes(sample.variants, input.sampleId);
+      notes = this.generateNotes(sample.variants, input.sampleId);
     }
 
     try {
@@ -52,7 +54,7 @@ export class ReportService {
     }
   }
 
-  #getVariantsStats(variants: Omit<Variant, "sampleId">[]): ReportStatisticsType {
+  private getVariantsStats(variants: Omit<Variant, "sampleId">[]): ReportStatisticsType {
     const pathogenic = variants.filter(v => v.classification === "pathogenic").length;
     const benign = variants.filter(v => v.classification === "benign").length;
     const vus = variants.filter(v => v.classification === "vus").length;
@@ -60,19 +62,23 @@ export class ReportService {
     return { pathogenic, benign, vus };
   }
 
-  #generateNotes(variants: Omit<Variant, "sampleId">[], sampleId: Sample["id"]) {
-    const { benign, pathogenic, vus } = this.#getVariantsStats(variants);
+  private generateNotes(variants: Omit<Variant, "sampleId">[], sampleId: Sample["id"]) {
+    const { benign, pathogenic, vus } = this.getVariantsStats(variants);
     return `Report for sample of id '${sampleId}' has a total of ${variants.length} with ${pathogenic} pathogenic, ${vus} vus, and ${benign} benign`
   }
 
-  #generateSummary(variants: Omit<Variant, "sampleId">[]): string {
+  private generateSummary(variants: Omit<Variant, "sampleId">[]): string {
     if (variants.length <= 0) {
       return "No variants were found."
     }
 
-    const { benign, pathogenic, vus } = this.#getVariantsStats(variants);
+    const { benign, pathogenic, vus } = this.getVariantsStats(variants);
 
     const message = `${variants.length} variants were found: ${pathogenic} pathogenic, ${benign} benign, and ${vus} VUS.`
     return message;
+  }
+
+  private handleNotFound(report: Report | undefined, id: Report['sampleId']): asserts report is Report {
+    if (!report) throw new NotFoundException(`Report with id ${id} not found`);
   }
 }

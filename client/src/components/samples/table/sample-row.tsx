@@ -18,7 +18,11 @@ const SampleRow = ({ sample }: Props) => {
   const isSelected = sample.id === selected?.id;
 
   return (
-    <TableRow data-state={isSelected && "selected"} onClick={() => onSelectSample(sample)} className="cursor-pointer hover:bg-primary/10 hover:border hover:border-primary/20">
+    <TableRow
+      data-state={isSelected && "selected"}
+      onClick={() => onSelectSample(sample)}
+      className="cursor-pointer hover:bg-primary/10 hover:border hover:border-primary/30"
+    >
       <Tooltip delayDuration={400}>
         <TooltipTrigger asChild>
           <TableCell className="font-medium max-w-25 truncate">{id}</TableCell>
