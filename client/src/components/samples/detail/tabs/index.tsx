@@ -27,7 +27,7 @@ const Tab = () => {
         })}
       </div>
 
-      <div className="border-2 my-3 w-full" />
+      <div className="border-2  w-full" />
 
       {tab === "report" && <ReportTab id={sample!.id} />}
       {tab === "detail" && <DetailTab sample={sample!} />}

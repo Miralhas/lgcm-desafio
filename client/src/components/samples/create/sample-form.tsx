@@ -100,7 +100,7 @@ const SampleForm = () => {
                   id={`variants-array-${index}-id`}
                   aria-invalid={fieldState.invalid}
                   className="h-8 placeholder:text-sm placeholder:text-[13px]"
-                  placeholder="Variant ID"
+                  placeholder="ID"
                 />
               )}
             />
@@ -114,7 +114,7 @@ const SampleForm = () => {
                   id={`variants-array-${index}-gene`}
                   aria-invalid={fieldState.invalid}
                   className="h-8 placeholder:text-sm placeholder:text-[13px]"
-                  placeholder="Variant Gene"
+                  placeholder="Gene"
                 />
               )}
             />
