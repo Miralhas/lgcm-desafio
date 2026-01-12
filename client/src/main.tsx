@@ -10,6 +10,6 @@ createRoot(document.getElementById('root')!).render(
     <Providers>
       <HomePage />
     </Providers>
-    <Toaster richColors />
+    <Toaster />
   </StrictMode>,
 )
