@@ -1,5 +1,5 @@
-import { CreateReport, Report } from "src/api/schemas/report.schema";
-import { Sample } from "src/api/schemas/sample.schema";
+import { CreateReport, Report } from "src/api/schemas/report.schema.js";
+import { Sample } from "src/api/schemas/sample.schema.js";
 
 export interface IReportRepository {
   create(input: CreateReport): Promise<Report | undefined>;

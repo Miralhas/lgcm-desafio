@@ -1,5 +1,5 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
-import { InputSchema } from "src/api/schemas/report.schema";
+import { InputSchema } from "src/api/schemas/report.schema.js";
 
 const route: FastifyPluginAsyncTypebox = async (app) => {
   app.post("/preview", { schema: { body: InputSchema } }, async (req, reply) => {

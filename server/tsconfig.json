@@ -7,13 +7,17 @@
     "outDir": "./dist",
     // Environment Settings
     // See also https://aka.ms/tsconfig/module
-    "module": "es2022",
-    "moduleResolution": "Node",
-    "target": "esnext",
-    // For nodejs:
-    // "lib": ["esnext"],
-    // "types": ["node"],
-    // and npm install -D @types/node
+    "lib": [
+      "es2024",
+      "ESNext.Array",
+      "ESNext.Collection",
+      "ESNext.Iterator",
+      "ESNext.Promise"
+    ],
+    "module": "nodenext",
+    "target": "es2024",
+    "esModuleInterop": true,
+    "moduleResolution": "node16",
     // Other Outputs
     "sourceMap": true,
     "declaration": true,
@@ -36,7 +40,10 @@
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
     "skipLibCheck": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "paths": {
+      "src/*": ["./src/*"],
+    }
   },
   "include": [
     "src/**/*.ts"

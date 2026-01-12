@@ -6,5 +6,7 @@ export const isUniqueConstraintError = (error: unknown): boolean => {
   }
 
   const cause = error.cause as any;
+
+  console.log("tooooooosda", cause);
   return cause?.code == "23505";
 };

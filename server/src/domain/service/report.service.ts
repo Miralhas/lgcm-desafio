@@ -1,11 +1,11 @@
-import { Report, ReportDTO, ReportInput, ReportStatisticsType } from "src/api/schemas/report.schema";
-import { Sample } from "src/api/schemas/sample.schema";
-import { Variant } from "src/api/schemas/variant.schema";
-import { isUniqueConstraintError } from "src/utils/map-error";
-import { NotFoundException } from "../exceptions/not-found";
-import { ReportAlreadyExists } from "../exceptions/report-already-exists";
-import { IReportRepository } from "../repository/reports.repository";
-import { SampleService } from "./sample.service";
+import { Report, ReportDTO, ReportInput, ReportStatisticsType } from "src/api/schemas/report.schema.js";
+import { Sample } from "src/api/schemas/sample.schema.js";
+import { Variant } from "src/api/schemas/variant.schema.js";
+import { isUniqueConstraintError } from "src/utils/map-error.js";
+import { NotFoundException } from "../exceptions/not-found.js";
+import { ReportAlreadyExists } from "../exceptions/report-already-exists.js";
+import { IReportRepository } from "../repository/reports.repository.js";
+import { SampleService } from "./sample.service.js";
 
 export class ReportService {
   constructor(

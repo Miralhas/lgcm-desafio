@@ -1,4 +1,4 @@
-import { Sample } from "src/api/schemas/sample.schema";
+import { Sample } from "src/api/schemas/sample.schema.js";
 
 export interface ISampleRepository {
   create(sample: Sample): Promise<Sample | undefined>;

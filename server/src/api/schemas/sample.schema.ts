@@ -1,5 +1,5 @@
 import Type, { Static } from "typebox";
-import { CreateVariantSchema, VariantSchema } from "./variant.schema";
+import { CreateVariantSchema } from "./variant.schema.js";
 
 export const SampleId = Type.Object({ id: Type.String({ format: "uuid" }) });
 

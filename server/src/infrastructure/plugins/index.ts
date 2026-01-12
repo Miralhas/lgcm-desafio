@@ -1,14 +1,14 @@
 import fp from 'fastify-plugin';
-import { ISampleRepository } from 'src/domain/repository/sample.repository';
-import { SampleService } from 'src/domain/service/sample.service';
-import { SampleDAO } from '../dao/sample.dao';
-import { db } from '../db';
-import { IVariantRepository } from 'src/domain/repository/variant.repository';
-import { VariantDAO } from '../dao/variant.dao';
-import { VariantService } from 'src/domain/service/variant.service';
-import { ReportService } from 'src/domain/service/report.service';
-import { ReportDAO } from '../dao/report.dao';
-import { IReportRepository } from 'src/domain/repository/reports.repository';
+import { ISampleRepository } from 'src/domain/repository/sample.repository.js';
+import { SampleService } from 'src/domain/service/sample.service.js';
+import { SampleDAO } from '../dao/sample.dao.js';
+import { db } from '../db/index.js';
+import { IVariantRepository } from 'src/domain/repository/variant.repository.js';
+import { VariantDAO } from '../dao/variant.dao.js';
+import { VariantService } from 'src/domain/service/variant.service.js';
+import { ReportService } from 'src/domain/service/report.service.js';
+import { ReportDAO } from '../dao/report.dao.js';
+import { IReportRepository } from 'src/domain/repository/reports.repository.js';
 
 export default fp(async (fastify) => {
   const variantRepository: IVariantRepository = new VariantDAO(db);

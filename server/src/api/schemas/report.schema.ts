@@ -1,4 +1,4 @@
-import { classificationEnum, reports } from "src/infrastructure/db/schemas";
+import { classificationEnum, reports } from "src/infrastructure/db/schemas.js";
 import Type, { Static } from "typebox";
 
 export const ReportStatistics = Type.Object({

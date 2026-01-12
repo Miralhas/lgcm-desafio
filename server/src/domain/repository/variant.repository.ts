@@ -1,5 +1,5 @@
-import { Sample } from "src/api/schemas/sample.schema";
-import { CreateVariantInput, Variant } from "src/api/schemas/variant.schema";
+import { Sample } from "src/api/schemas/sample.schema.js";
+import { CreateVariantInput, Variant } from "src/api/schemas/variant.schema.js";
 
 export interface IVariantRepository {
   create(post: CreateVariantInput, sampleId: Sample["id"]): Promise<Variant | undefined>;
