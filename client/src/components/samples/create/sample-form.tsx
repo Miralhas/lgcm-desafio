@@ -81,7 +81,7 @@ const SampleForm = () => {
         />
 
         {fields.map((field, index) => (
-          <div className="grid grid-cols-3 gap-1 mt-2">
+          <div className="grid grid-cols-3 gap-1 mt-2" key={field.id}>
             <div className="col-span-full flex justify-between items-center">
               <p className="text-sm ">Variant {index + 1}</p>
               {fields.length > 1 && (
@@ -148,7 +148,7 @@ const SampleForm = () => {
             />
           </div>
         ))}
-        <Button className="w-full mt-3" variant="outline" size="sm" type="button" onClick={() => append(defaultVariant)}>
+        <Button className="w-full mt-3" variant="modern-secondary" size="sm" type="button" onClick={() => append(defaultVariant)}>
           Add Variant
           <PlusIcon />
         </Button>
