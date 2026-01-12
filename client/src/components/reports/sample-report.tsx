@@ -3,12 +3,19 @@ import type { Report } from "@/types/report";
 import PdfModal from "../pdf/pdf-modal";
 import VariantsTable from "../variants/table";
 
-const SampleReport = ({ data }: { data: Report }) => {
+type Props = {
+  data: Report;
+  showDownloadPDF?: boolean;
+}
+
+const SampleReport = ({ data, showDownloadPDF = false }: Props) => {
   return (
     <div className="space-y-3 w-full">
-      <div className="flex justify-center mb-4">
-        <PdfModal report={data} />
-      </div>
+      {showDownloadPDF && (
+        <div className="flex justify-center mb-4">
+          <PdfModal report={data} />
+        </div>
+      )}
       <p className="text-center capitalize">{formatFullDateBR(data.generatedAt)}</p>
       <div className="bg-card border-x-4 text-center rounded-sm border-zinc-50/40 p-2 text-foreground/80 text-sm mb-3">
         <p>{data.summary}</p>

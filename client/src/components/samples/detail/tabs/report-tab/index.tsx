@@ -29,7 +29,7 @@ const ReportTab = ({ id }: { id: Sample["id"] }) => {
 
   return (
     <div className="max-h-[300px] overflow-y-auto p-3 pt-1">
-      <SampleReport data={query.data!} />
+      <SampleReport data={query.data!} showDownloadPDF />
     </div>
   )
 
