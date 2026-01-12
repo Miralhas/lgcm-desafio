@@ -3,9 +3,9 @@ import env from '@fastify/env';
 import * as dotenv from "dotenv";
 import Fastify from 'fastify';
 import { dirname, join } from 'node:path';
-import { errorHandler } from "src/api/error-handler";
-import { createLogger, Level } from 'src/utils/logger';
-import { options } from './schema';
+import { errorHandler } from "src/api/error-handler/index.js";
+import { createLogger, Level } from 'src/utils/logger.js';
+import { options } from './schema.js';
 import { fileURLToPath } from "node:url";
 import cors from "@fastify/cors";
 

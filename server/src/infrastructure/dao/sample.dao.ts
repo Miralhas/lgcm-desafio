@@ -1,7 +1,7 @@
-import { CreateSampleInput, Sample } from 'src/api/schemas/sample.schema';
-import { ISampleRepository } from 'src/domain/repository/sample.repository';
-import { DB } from '../db';
-import { samples, variants } from '../db/schemas';
+import { Sample } from 'src/api/schemas/sample.schema.js';
+import { ISampleRepository } from 'src/domain/repository/sample.repository.js';
+import { DB } from '../db/index.js';
+import { samples, variants } from '../db/schemas.js';
 
 export class SampleDAO implements ISampleRepository {
 

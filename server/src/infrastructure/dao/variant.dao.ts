@@ -1,8 +1,8 @@
-import { CreateVariantInput, Variant } from "src/api/schemas/variant.schema";
-import { IVariantRepository } from 'src/domain/repository/variant.repository';
-import { DB } from '../db';
-import { variants } from "../db/schemas";
-import { Sample } from "src/api/schemas/sample.schema";
+import { CreateVariantInput, Variant } from "src/api/schemas/variant.schema.js";
+import { IVariantRepository } from 'src/domain/repository/variant.repository.js';
+import { DB } from '../db/index.js';
+import { variants } from "../db/schemas.js";
+import { Sample } from "src/api/schemas/sample.schema.js";
 
 export class VariantDAO implements IVariantRepository {
 

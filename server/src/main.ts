@@ -1,4 +1,4 @@
-import { createServer } from 'src/infrastructure/server'
+import { createServer } from 'src/infrastructure/server/index.js';
 
 
 const main = async () => {

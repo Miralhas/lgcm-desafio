@@ -1,8 +1,8 @@
-import { CreateReport, Report } from "src/api/schemas/report.schema";
-import { IReportRepository } from "src/domain/repository/reports.repository";
-import { DB } from "../db";
-import { reports } from "../db/schemas";
-import { Sample } from "src/api/schemas/sample.schema";
+import { CreateReport, Report } from "src/api/schemas/report.schema.js";
+import { IReportRepository } from "src/domain/repository/reports.repository.js";
+import { DB } from "../db/index.js";
+import { reports } from "../db/schemas.js";
+import { Sample } from "src/api/schemas/sample.schema.js";
 
 export class ReportDAO implements IReportRepository {
   constructor(private readonly db: DB) { }

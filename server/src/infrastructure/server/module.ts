@@ -1,6 +1,6 @@
-import { ReportService } from "src/domain/service/report.service"
-import { SampleService } from "src/domain/service/sample.service"
-import { VariantService } from "src/domain/service/variant.service"
+import { ReportService } from "src/domain/service/report.service.js"
+import { SampleService } from "src/domain/service/sample.service.js"
+import { VariantService } from "src/domain/service/variant.service.js"
 
 declare module 'fastify' {
   interface FastifyInstance {

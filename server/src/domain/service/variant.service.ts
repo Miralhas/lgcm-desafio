@@ -1,10 +1,10 @@
-import { VariantMapper } from "src/api/mappers/variant.mapper";
-import { Sample } from "src/api/schemas/sample.schema";
-import { CreateVariantInput, Variant, VariantDTO } from "src/api/schemas/variant.schema";
-import { isUniqueConstraintError } from "src/utils/map-error";
-import { NotFoundException } from "../exceptions/not-found";
-import { VariantAlreadyExists } from "../exceptions/variant-already-exists";
-import { IVariantRepository } from "../repository/variant.repository";
+import { VariantMapper } from "src/api/mappers/variant.mapper.js";
+import { Sample } from "src/api/schemas/sample.schema.js";
+import { CreateVariantInput, Variant, VariantDTO } from "src/api/schemas/variant.schema.js";
+import { isUniqueConstraintError } from "src/utils/map-error.js";
+import { NotFoundException } from "../exceptions/not-found.js";
+import { VariantAlreadyExists } from "../exceptions/variant-already-exists.js";
+import { IVariantRepository } from "../repository/variant.repository.js";
 
 export class VariantService {
   constructor(protected readonly variantRepository: IVariantRepository) { }

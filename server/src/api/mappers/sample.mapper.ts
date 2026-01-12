@@ -1,5 +1,4 @@
-import { CreateSampleInput, Sample, SampleDTO } from "../schemas/sample.schema";
-import { Variant } from "../schemas/variant.schema";
+import { CreateSampleInput, Sample, SampleDTO } from "../schemas/sample.schema.js";
 
 export class SampleMapper {
   static toResponse(sample: Sample): SampleDTO {

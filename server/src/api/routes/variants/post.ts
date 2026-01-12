@@ -1,6 +1,6 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
-import { SampleId } from "src/api/schemas/sample.schema";
-import { CreateVariantSchema } from "src/api/schemas/variant.schema";
+import { SampleId } from "src/api/schemas/sample.schema.js";
+import { CreateVariantSchema } from "src/api/schemas/variant.schema.js";
 
 const route: FastifyPluginAsyncTypebox = async (app) => {
   app.post("/:id", {

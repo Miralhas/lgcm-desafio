@@ -1,6 +1,6 @@
 import { FastifyInstance } from "fastify";
-import { BaseException } from "src/domain/exceptions/base-exception";
-import { NotFoundException } from "src/domain/exceptions/not-found";
+import { BaseException } from "src/domain/exceptions/base-exception.js";
+import { NotFoundException } from "src/domain/exceptions/not-found.js";
 
 export const errorHandler: FastifyInstance['errorHandler'] = function (error, request, reply) {
   if (error instanceof BaseException) {

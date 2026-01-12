@@ -1,4 +1,4 @@
-import { classificationEnum } from "src/infrastructure/db/schemas";
+import { classificationEnum } from "src/infrastructure/db/schemas.js";
 import Type, { Static } from "typebox";
 
 export const VariantId = Type.Object({ id: Type.String() });
