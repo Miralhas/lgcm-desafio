@@ -6,7 +6,7 @@ const main = async () => {
   const port = Number(fastify.config.PORT);
 
   try {
-    fastify.listen({ port }, () => {
+    fastify.listen({ port, host: '0.0.0.0' }, () => {
       fastify.log.info(`Listening on ${port}...`);
     })
   } catch (error) {

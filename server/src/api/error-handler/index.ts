@@ -2,7 +2,7 @@ import { FastifyInstance } from "fastify";
 import { BaseException } from "src/domain/exceptions/base-exception.js";
 import { NotFoundException } from "src/domain/exceptions/not-found.js";
 
-export const errorHandler: FastifyInstance['errorHandler'] = function (error, request, reply) {
+export const errorHandler: FastifyInstance['errorHandler'] = async function (error, request, reply) {
   if (error instanceof BaseException) {
     if (error instanceof NotFoundException && request.method === "DELETE") {
       return reply.code(204).send();

@@ -26,7 +26,7 @@ export const createServer = async () => {
   });
 
   await app.register(cors, {
-    origin: true
+    origin: "*",
   })
 
   await app.register(env, options).after();
@@ -34,12 +34,12 @@ export const createServer = async () => {
   await app.register(autoLoad, {
     dir: join(__dirname, "../../api/routes"),
     options: { prefix: "/api" },
-    // forceESM: true,
+    forceESM: true,
   });
 
   app.register(autoLoad, {
     dir: join(__dirname, '../plugins'),
-    // forceESM: true,
+    forceESM: true,
   });
 
   app.setErrorHandler(errorHandler);
