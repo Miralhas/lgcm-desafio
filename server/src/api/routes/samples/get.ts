@@ -1,4 +1,5 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
+import { SampleMapper } from "src/api/mappers/sample.mapper.js";
 import { SampleId } from "src/api/schemas/sample.schema.js";
 
 const routes: FastifyPluginAsyncTypebox = async (app) => {
@@ -12,7 +13,7 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
 
   app.get("/", async (req, reply) => {
     const res = await app.sampleService.findAll();
-    reply.send(res);
+    reply.send(res.map(s => SampleMapper.toResponse(s)));
   });
 
 }
