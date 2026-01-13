@@ -8,7 +8,7 @@ const TABS = ["detail", "report"] as const;
 export type Tab = typeof TABS[number];
 
 const classname = "cursor-pointer p-1 w-[150px] flex justify-center text-muted-foreground border border-zinc-50/30 rounded-lg capitalize"
-const selectedClass = "bg-primary/10 border-primary/30 text-white"
+const selectedClass = "bg-primary/10 border border-primary/30 text-white"
 
 const Tab = () => {
   const { sample } = useSampleContext()

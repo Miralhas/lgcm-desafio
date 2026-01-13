@@ -1,7 +1,7 @@
 import { useSampleContext } from "@/contexts/sample-context";
 import { cn } from "@/lib/utils";
-import { FlaskConicalOff } from "lucide-react";
 import { type PropsWithChildren } from "react";
+import NoSample from "../no-sample";
 import Tab from "./tabs";
 
 const SampleDetail = () => {
@@ -9,11 +9,8 @@ const SampleDetail = () => {
 
   if (!sample) {
     return (
-      <Container className="flex items-center justify-center">
-        <div className="flex items-center justify-center p-12 rounded-md bg-card/60 text-muted-foreground flex-col gap-2 border">
-          <FlaskConicalOff className="size-8" />
-          <p>No sample selected...</p>
-        </div>
+      <Container className="flex items-center justify-center p-6">
+        <NoSample text="No sample selected..." />
       </Container>
     )
   }
@@ -27,12 +24,12 @@ const SampleDetail = () => {
 
 const Container = ({ children, className }: PropsWithChildren<{ className?: string }>) => {
   return (
-    <div className="flex-1 space-y-1">
-      <h2 className="text-foreground/70 text-right">Sample Detail</h2>
-      <div className={cn("bg-secondary border rounded-lg md:min-h-100", className)}>
+    <>
+      <h2 className="text-foreground/70 md:text-right row-start-1 col-start-2">Sample Detail</h2>
+      <div className={cn("bg-secondary border rounded-lg", className)}>
         {children}
       </div>
-    </div>
+    </>
   )
 }
 

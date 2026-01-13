@@ -54,7 +54,7 @@ const SampleForm = () => {
   }
 
   return (
-    <div className="w-full max-w-[500px] mx-auto border border-zinc-50/20 bg-secondary min-h-50 rounded-lg p-3 space-y-2">
+    <div className="relative z-50 w-full max-w-[500px] mx-auto border border-zinc-50/20 bg-secondary min-h-50 rounded-lg p-3 space-y-2">
       <div className="space-y-1.5 border-b-4 pb-3">
         <h2 className="font-semibold text-foreground/80">Create Sample</h2>
         <p className="text-muted-foreground text-sm">Create a sample with one or multiple variants</p>

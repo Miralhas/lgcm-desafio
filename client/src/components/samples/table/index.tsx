@@ -1,3 +1,4 @@
+import SamplesSkeleton from "@/components/samples-skeleton";
 import {
   Table,
   TableBody,
@@ -7,8 +8,8 @@ import {
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 import { useGetSamples } from "@/services/samples/query/use-get-samples";
-import { FlaskConicalOffIcon } from "lucide-react";
 import type { PropsWithChildren } from "react";
+import NoSample from "../no-sample";
 import SampleRow from "./sample-row";
 
 const SamplesTable = () => {
@@ -18,22 +19,23 @@ const SamplesTable = () => {
     return <h1>Error...</h1>
   }
 
-  const isEmpty = query.data.length <= 0;
+  if (query.isLoading) {
+    return <SamplesSkeleton />
+  }
+
+  const isEmpty = query.data && query.data.length <= 0;
 
   if (isEmpty) {
     return (
-      <Wrapper className="items-center justify-center">
-        <div className="p-12 bg-card/80 text-muted-foreground border border-zinc-50/15 rounded-lg space-y-3">
-          <FlaskConicalOffIcon className="size-7 mx-auto" />
-          <p className="text-center">No samples saved yet.</p>
-        </div>
+      <Wrapper className="flex items-center justify-center p-6">
+        <NoSample text="No samples saved yet." />
       </Wrapper>
     )
   }
 
   return (
-    <Wrapper>
-      <Table className="">
+    <Wrapper className="flex flex-col space-y-2 p-4">
+      <Table>
         <TableHeader>
           <TableRow>
             <TableHead className="">Id</TableHead>
@@ -42,7 +44,7 @@ const SamplesTable = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {query.data.map(s => (
+          {query.data?.map(s => (
             <SampleRow sample={s} key={s.id} />
           ))}
         </TableBody>
@@ -54,12 +56,12 @@ const SamplesTable = () => {
 
 const Wrapper = ({ children, className }: PropsWithChildren<{ className?: string }>) => {
   return (
-    <div className="space-y-1">
-      <h2 className="text-foreground/70">Available Samples</h2>
-      <div className={cn("max-w-150 bg-secondary p-4 border rounded-lg md:min-h-100 flex flex-col space-y-2", className)}>
+    <>
+      <h2 className="text-foreground/70 row-start-1 col-span-1">Available Samples</h2>
+      <div className={cn("bg-secondary border rounded-lg", className)}>
         {children}
       </div>
-    </div>
+    </>
   )
 }
 
