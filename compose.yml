@@ -1,7 +1,7 @@
 services:
   postgres:
     image: postgres:17.4
-    container_name: lgmc-postgres
+    container_name: lgcm-postgres
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
@@ -17,14 +17,14 @@ services:
     ports:
       - "5434:5432"
     networks:
-      - lgmc-network
+      - lgcm-network
 
   server:
     build:
       context: ./server
       dockerfile: Dockerfile
-    container_name: lgmc-server
-    image: lgmc-server:latest
+    container_name: lgcm-server
+    image: lgcm-server:latest
     ports:
       - "3002:3002"
     environment:
@@ -36,7 +36,7 @@ services:
       postgres:
         condition: service_healthy
     networks:
-      - lgmc-network
+      - lgcm-network
     command: >
       sh -c "
         npx drizzle-kit generate &&
@@ -45,8 +45,8 @@ services:
       "
 
   client:
-    container_name: lgmc-client
-    image: lgmc-client:latest
+    container_name: lgcm-client
+    image: lgcm-client:latest
     build:
       context: ./client
       dockerfile: Dockerfile
@@ -57,10 +57,10 @@ services:
     ports:
       - 4173:4173
     networks:
-      - lgmc-network
+      - lgcm-network
 
 volumes:
   postgres-data:
 networks:
-  lgmc-network:
-    name: lgmc-network
+  lgcm-network:
+    name: lgcm-network
