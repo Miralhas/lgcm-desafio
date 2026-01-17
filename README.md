@@ -1,5 +1,7 @@
 # LGCM Desafio
 
+https://github.com/user-attachments/assets/b898da56-cf5e-46d4-9e50-a2fc3329b3dc
+
 ## Requisitos
 
 - Node.js 24+
