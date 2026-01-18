@@ -82,3 +82,4 @@ https://github.com/user-attachments/assets/b898da56-cf5e-46d4-9e50-a2fc3329b3dc
    npm install
    npm run dev
    ```
+4. Abra a página em seu navegador: http://localhost:4173
