@@ -58,9 +58,12 @@ services:
       - 4173:4173
     networks:
       - lgcm-network
-
+  
 volumes:
   postgres-data:
+  influxdb_data:
+  grafana_data:
+  grafana_logs:
 networks:
   lgcm-network:
     name: lgcm-network

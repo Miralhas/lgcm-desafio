@@ -1,5 +1,5 @@
 import { SampleMapper } from "src/api/mappers/sample.mapper.js";
-import { CreateSampleInput, Sample, SampleDTO } from "src/api/schemas/sample.schema.js";
+import { CreateSampleInput, Sample, SampleDTO, UpdateSampleInput } from "src/api/schemas/sample.schema.js";
 import { NotFoundException } from "../exceptions/not-found.js";
 import { ISampleRepository } from "../repository/sample.repository.js";
 import { VariantService } from "./variant.service.js";
@@ -33,6 +33,15 @@ export class SampleService {
       }
       throw err;
     }
+  }
+
+  async update(id: Sample["id"], input: UpdateSampleInput): Promise<Sample | undefined> {
+    await this.sampleRepository.update(id, input as Sample);
+    return this.findByIdOrException(id);
+  }
+
+  async delete(id: Sample["id"]): Promise<void> {
+    this.sampleRepository.delete(id);
   }
 
   private handleNotFound(sample: Sample | undefined, id: Sample['id']): asserts sample is Sample {

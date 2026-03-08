@@ -13,7 +13,13 @@ export const SampleSchema = Type.Intersect([
   CreateSampleSchema
 ]);
 
+export const UpdateSampleSchema = Type.Object({
+  name: Type.String(),
+})
+
 export type CreateSampleInput = Static<typeof CreateSampleSchema>;
+export type UpdateSampleInput = Static<typeof UpdateSampleSchema>;
+
 export type Sample = Static<typeof SampleSchema>;
 
 export type SampleDTO = Sample;

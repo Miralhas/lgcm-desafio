@@ -1,4 +1,4 @@
-import { CreateSampleInput, Sample, SampleDTO } from "../schemas/sample.schema.js";
+import { CreateSampleInput, Sample, SampleDTO, UpdateSampleInput } from "../schemas/sample.schema.js";
 import { VariantMapper } from "./variant.mapper.js";
 
 export class SampleMapper {
