@@ -14,14 +14,15 @@ Os percentis medem a distribuição dos tempos de resposta das requisições:
 
 | Percentil | Significado |
 |-----------|-------------|
-| **p90** | 90% das requisições foram mais rápidas que esse valor; 10% foram mais lentas |
-| **p95** | 95% das requisições foram mais rápidas que esse valor; 5% foram mais lentas |
-| **p99** | 99% das requisições foram mais rápidas que esse valor; 1% foram mais lentas |
+| **p90** | 90% das requisições foram mais rápidas que o valor definido; 10% foram mais lentas |
+| **p95** | 95% das requisições foram mais rápidas que o valor definido; 5% foram mais lentas |
+| **p99** | 99% das requisições foram mais rápidas que o valor definido; 1% foram mais lentas |
 
 > **Exemplo prático:** Se o p95 for `2000ms`, significa que a grande maioria dos usuários (95%) teve uma resposta em menos de 2 segundos. O p99 captura os *worst-case scenarios*, útil para identificar gargalos que afetam uma minoria, mas que ainda impactam a satisfação do usuário.
 
-- **p95** → representa a experiência da maioria dos usuários
-- **p99** → captura os piores casos (*worst-case scenarios*)
+- **p90** → Indica que 90% das solicitações ou transações são mais rápidas do que esse valor. É útil para compreender como a maioria dos usuários interage com o seu sistema.
+- **p95** → Essa é uma medida mais rigorosa do que o p90 e é frequentemente utilizada no ajuste de desempenho e no planejamento de capacidade para identificar valores atípicos (outliers)
+- **p99** → Representa a pior experiência para o 1% dos usuários com maior carga de uso. É fundamental para sistemas em que mesmo pequenos atrasos ou falhas podem ter consequências significativas.
 
 ### Executors
 Definem a estratégia de como os VUs são criados e gerenciados durante o teste:
@@ -39,7 +40,7 @@ Significa que o p95 deve ser menor que 2000ms e o p99 menor que 3000ms.
 
 ---
 
-## Cenários de Teste
+## Cenários de Teste utilizados
 
 ### Smoke Test
 **Objetivo:** Verificar se o sistema funciona corretamente sob uma carga mínima, validando que a API está operacional antes de testes mais pesados.
@@ -105,7 +106,7 @@ Registram a distribuição dos tempos de resposta para cada tipo de operação:
 | `req_duration_time_delete` | Tempo das requisições DELETE |
 
 ### Counters (Contadores de eventos)
-Contam ocorrências de erros e sucessos ao longo do teste:
+Contam ocorrências de erros e quantidade de amostras criadas ao decorrer do teste:
 
 | Contador | Descrição |
 |---------|-----------|
@@ -130,9 +131,9 @@ Cada iteração do teste executa os seguintes grupos em sequência:
 > Entre cada iteração, há um `sleep(1)` de 1 segundo para simular o comportamento real de um usuário.
 
 ---
-
+ 
 ## Thresholds Configurados
-
+ 
 | Threshold | Critério |
 |-----------|---------|
 | `http_req_failed` | Taxa de erro < 1% |
@@ -142,7 +143,41 @@ Cada iteração do teste executa os seguintes grupos em sequência:
 | `post_errors_counter` | Menos de 1 erro |
 | `delete_errors_counter` | Menos de 1 erro |
 | `put_errors_counter` | Menos de 1 erro |
-
+ 
+---
+ 
+## Como Executar com Docker
+ 
+> **Pré-requisito:** Docker e Docker Compose instalados na máquina.
+ 
+### 1. Inicie o servidor da aplicação
+ 
+No diretório raiz do projeto, suba os containers da aplicação:
+ 
+```bash
+docker compose up -d --build
+```
+ 
+### 2. Acesse o diretório de testes
+ 
+```bash
+cd /k6
+```
+ 
+### 3. Inicie os serviços necessários para o teste
+ 
+Sobe os serviços de suporte ao k6 (grafana, prometheus, influxdb):
+ 
+```bash
+docker compose -f compose.stress.yml up -d
+```
+ 
+### 4. Execute o teste de estresse
+ 
+```bash
+docker compose -f .\compose.stress.yml run k6 run /scripts/samples.js
+```
+ 
 ---
 
 ## Referências
