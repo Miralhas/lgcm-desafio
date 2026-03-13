@@ -30,11 +30,11 @@ const putCounterErrors = new Counter('put_errors_counter');
 
 export const options = {
     scenarios: {
-        // smoke: { // Smoke é um cenário de teste que verifica como o sistema funciona sob uma carga mínima de requisições.
-        //     executor: "constant-vus", // Vai manter uma quantidade de VUs constante durante o tempo de duração do cenário
-        //     vus: 2,
-        //     duration: '1m',
-        // },
+        smoke: { // Smoke é um cenário de teste que verifica como o sistema funciona sob uma carga mínima de requisições.
+            executor: "constant-vus", // Vai manter uma quantidade de VUs constante durante o tempo de duração do cenário
+            vus: 2,
+            duration: '1m',
+        },
         load: { // Load é um cenário que verifica como o sistema funciona sob uma carga típica. 
             executor: "ramping-vus", // Dispara o número de VUs de acordo com os estágios estabelecidos
             stages: [
@@ -43,20 +43,20 @@ export const options = {
                 { duration: '1m', target: 0 }, // 1 minuto para diminuir o número de requisições simultâneas para zero.
 
             ],
-            // startTime: "1m30s"
+            startTime: "1m30s"
         },
-        // stress: { // Verifica como o sistema funciona sob uma carga extrema.
-        //     executor: "ramping-vus",
-        //     stages: [
-        //         { duration: '30s', target: 100 }, // normal load
-        //         { duration: '1m', target: 100 },
-        //         { duration: '15s', target: 300 }, // above normal load
-        //         { duration: '45s', target: 300 },
-        //         { duration: '15s', target: 500 }, // breaking point
-        //         { duration: '2m', target: 0 },
-        //     ],
-        //     startTime: "6m"
-        // }
+        stress: { // Verifica como o sistema funciona sob uma carga extrema.
+            executor: "ramping-vus",
+            stages: [
+                { duration: '30s', target: 100 }, // normal load
+                { duration: '1m', target: 100 },
+                { duration: '15s', target: 300 }, // above normal load
+                { duration: '45s', target: 300 },
+                { duration: '15s', target: 500 }, // breaking point
+                { duration: '2m', target: 0 },
+            ],
+            startTime: "6m"
+        }
     },
     thresholds: {
         // Rate de error precisa ser menor que 1%.
