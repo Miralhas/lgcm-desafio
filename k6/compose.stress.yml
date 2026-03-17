@@ -28,12 +28,14 @@ services:
 
   k6:
     container_name: lgcm-k6 
-    image: grafana/k6:latest
+    image: grafana/k6:master-with-browser
     networks:
       - k6
       - lgcm-network
     ports:
       - "6565:6565"
+    extra_hosts:
+    - "host.docker.internal:host-gateway"
     environment:
       - K6_OUT=influxdb=http://influxdb:8086/k6
     volumes:

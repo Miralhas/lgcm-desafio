@@ -1,4 +1,5 @@
-import { check, group, sleep } from 'k6';
+import { check, fail, group, sleep } from 'k6';
+import { browser } from 'k6/browser';
 import http from 'k6/http';
 import { Counter, Trend } from 'k6/metrics';
 import { randomString } from './libs/string-utils.js';
@@ -30,33 +31,43 @@ const putCounterErrors = new Counter('put_errors_counter');
 
 export const options = {
     scenarios: {
-        smoke: { // Smoke é um cenário de teste que verifica como o sistema funciona sob uma carga mínima de requisições.
-            executor: "constant-vus", // Vai manter uma quantidade de VUs constante durante o tempo de duração do cenário
-            vus: 2,
-            duration: '1m',
+        // smoke: { // Smoke é um cenário de teste que verifica como o sistema funciona sob uma carga mínima de requisições.
+        //     executor: "constant-vus", // Vai manter uma quantidade de VUs constante durante o tempo de duração do cenário
+        //     vus: 2,
+        //     duration: '1m',
+        //     exec: "protocolTest",
+        // },
+        browser: {
+            executor: 'per-vu-iterations',
+            exec: "browserTest",
+            options: {
+                browser: {
+                    type: 'chromium',
+                },
+            },
         },
-        load: { // Load é um cenário que verifica como o sistema funciona sob uma carga típica. 
-            executor: "ramping-vus", // Dispara o número de VUs de acordo com os estágios estabelecidos
-            stages: [
-                { duration: '1m', target: 100 }, // 1 minuto para fazer 100 requisições
-                { duration: '2m', target: 100 }, // estabilizar 100 requisições simultâneas por 2 minutos
-                { duration: '1m', target: 0 }, // 1 minuto para diminuir o número de requisições simultâneas para zero.
+        // load: { // Load é um cenário que verifica como o sistema funciona sob uma carga típica. 
+        //     executor: "ramping-vus", // Dispara o número de VUs de acordo com os estágios estabelecidos
+        //     stages: [
+        //         { duration: '1m', target: 100 }, // 1 minuto para fazer 100 requisições
+        //         { duration: '2m', target: 100 }, // estabilizar 100 requisições simultâneas por 2 minutos
+        //         { duration: '1m', target: 0 }, // 1 minuto para diminuir o número de requisições simultâneas para zero.
 
-            ],
-            startTime: "1m30s"
-        },
-        stress: { // Verifica como o sistema funciona sob uma carga extrema.
-            executor: "ramping-vus",
-            stages: [
-                { duration: '30s', target: 100 }, // normal load
-                { duration: '1m', target: 100 },
-                { duration: '15s', target: 300 }, // above normal load
-                { duration: '45s', target: 300 },
-                { duration: '15s', target: 500 }, // breaking point
-                { duration: '2m', target: 0 },
-            ],
-            startTime: "6m"
-        }
+        //     ],
+        //     startTime: "1m30s"
+        // },
+        // stress: { // Verifica como o sistema funciona sob uma carga extrema.
+        //     executor: "ramping-vus",
+        //     stages: [
+        //         { duration: '30s', target: 100 }, // normal load
+        //         { duration: '1m', target: 100 },
+        //         { duration: '15s', target: 300 }, // above normal load
+        //         { duration: '45s', target: 300 },
+        //         { duration: '15s', target: 500 }, // breaking point
+        //         { duration: '2m', target: 0 },
+        //     ],
+        //     startTime: "6m"
+        // }
     },
     thresholds: {
         // Rate de error precisa ser menor que 1%.
@@ -72,7 +83,8 @@ export const options = {
     }
 };
 
-const BASE_URL = "http://server:3002/api";
+const SERVER_BASE_URL = "http://host.docker.internal:3002/api";
+const CLIENT_BASE_URL = "http://host.docker.internal:4173"
 
 const generatePostPayload = () => JSON.stringify({
     name: `K6 - ${randomString(3).toUpperCase()}`,
@@ -90,14 +102,60 @@ const generatePostPayload = () => JSON.stringify({
     ]
 });
 
+const getTableRowsLength = async (page) => {
+    const locator = await page.locator("//table[@data-slot='table']/tbody/tr").all();
+    return locator.length;
+}
+
+export const browserTest = async () => {
+    let checkData;
+    const page = await browser.newPage();
+
+    try {
+        // Home Page
+        await page.goto(CLIENT_BASE_URL);
+
+        checkData = await page.locator('h1').textContent();
+        check(page, {
+            header: checkData === 'LGCM - Samples',
+        });
+
+        const prePostRowsLength = await getTableRowsLength(page);
+
+        // Samples Form
+        const sampleNameLocator = page.locator('#name');
+        await sampleNameLocator.type(`B S - ${uuid.v4()}`);
+
+        const variantNameLocator = page.locator('#variants-array-0-id');
+        await variantNameLocator.type(`B V - ${uuid.v4()}`);
+
+        const variantGeneLocator = page.locator('#variants-array-0-gene');
+        await variantGeneLocator.type(`B G - ${uuid.v4()}`);
+
+        await page.locator('button', { hasText: 'Create' }).click();
+
+        await page.waitForTimeout(500);
+
+        const afterPostRowsLength = await getTableRowsLength(page);
+
+        console.log(prePostRowsLength);
+        console.log(afterPostRowsLength);
+    } catch (error) {
+        fail(`Browser iteration failed: ${error.message}`);
+    } finally {
+        await page.close();
+    }
+
+    sleep(1);
+}
 
 // The default exported function is gonna be picked up by k6 as the entry point for the test script. It will be executed repeatedly in "iterations" for the whole duration of the test.
-export default () => {
-    let URL = `${BASE_URL}/samples`;
+export const protocolTest = () => {
+    let URL = `${SERVER_BASE_URL}/samples`;
     let newSampleId;
 
     group('01. Fetch All samples', () => {
-        const res = http.get(`${BASE_URL}/samples`);
+        const res = http.get(`${SERVER_BASE_URL}/samples`);
         const responseDuration = res.timings.duration;
         reqDurationTimeGet.add(responseDuration);
         if (!check(res, { 'Retrieve single sample status is 200': (r) => r.status === 200 })) {
@@ -141,7 +199,7 @@ export default () => {
 
     if (newSampleId) {
         group('04. Update sample by ID', () => {
-            const payload = JSON.stringify({ name2: `Updated - ${randomString(3).toUpperCase()}` });
+            const payload = JSON.stringify({ name: `Updated - ${randomString(3).toUpperCase()}` });
 
             const headers = {
                 headers: {

@@ -51,9 +51,9 @@ services:
       context: ./client
       dockerfile: Dockerfile
       args:
-        - VITE_API_URL=http://localhost:3002
+        - VITE_API_URL=http://host.docker.internal:3002
     environment:
-      - VITE_API_URL=http://localhost:3002
+      - VITE_API_URL=http://host.docker.internal:3002
     ports:
       - 4173:4173
     networks:
